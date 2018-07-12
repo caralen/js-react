@@ -54,13 +54,13 @@ export default class App extends Component {
 
         
         {
-          this.state.shows.map((show) => <button onClick={() => this._getShowDetails(show._id)} type="button">{show.title}</button>)
+          this.state.shows.map((show) => <button key={show._id} onClick={() => this._getShowDetails(show._id)} type="button">{show.title}</button>)
         }
         {
           <div> <p>{this.state.showDetails.title}</p> <p>{this.state.showDetails.description}</p> </div>
         }
         {
-          this.state.showEpisodes.map((episode) => <div> <p>{episode.title}</p> <p>{episode.description}</p> </div>)
+          this.state.showEpisodes.map((episode) => <div key={episode._id}> <br/><p>{episode.title}</p> <p>{episode.description}</p> </div>)
         }
         
       </div>
