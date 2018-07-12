@@ -14,8 +14,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
-    "precommit": "lint-staged"
+    "build": "react-scripts build"
   },
   "devDependencies": {
     "@infinumjs/eslint-config-react": "^1.0.0",
