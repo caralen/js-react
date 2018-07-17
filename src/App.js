@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
+import { ShowComponent } from './ShowComponent';
 
-export default class App extends Component {
+export class App extends Component {
   constructor(args) {
     super(args);
 
@@ -52,16 +53,13 @@ export default class App extends Component {
             : <p style={{color: 'red'}}>There are {this.state.shows.length} shows.</p>
         }
 
-        
-        {
-          this.state.shows.map((show) => <button key={show._id} onClick={() => this._getShowDetails(show._id)} type="button">{show.title}</button>)
-        }
-        {
-          <div> <p>{this.state.showDetails.title}</p> <p>{this.state.showDetails.description}</p> </div>
-        }
-        {
-          this.state.showEpisodes.map((episode) => <div key={episode._id}> <br/><p>{episode.title}</p> <p>{episode.description}</p> </div>)
-        }
+        <ul>
+          {
+            this.state.shows.map((show) => (
+              <ShowComponent key={show._id} show={show} />
+            ))
+          }
+        </ul>
         
       </div>
     );
