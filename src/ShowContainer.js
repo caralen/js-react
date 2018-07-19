@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
-import { ShowDetailsComponent } from './ShowDetailsComponent';
-import { ShowEpisodeComponent } from './ShowEpisodeComponent';
+import { ShowDetailsComponent } from './components/ShowDetailsComponent';
+import { ShowEpisodeComponent } from './components/ShowEpisodeComponent';
 
 export class ShowContainer extends Component {
     
     constructor(args) {
         super(args);
         
-        this.showId = this.props.match.params;
+        this.showId = this.props.match.params.showsId;
     
         this.state = {
             showDetails: {},
@@ -16,15 +16,16 @@ export class ShowContainer extends Component {
     }
 
     componentDidMount() {
-        fetch(`https://api.infinum.academy/api/shows/${this.showId.showsId}`)
+
+        fetch(`https://api.infinum.academy/api/shows/${this.showId}`)
             .then((data) => data.json())
             .then((response) => this.setState({ showDetails: response.data }))
-            .catch(() => console.log("Error"));
+            .catch((error) => console.log(error));
 
-        fetch(`https://api.infinum.academy/api/shows/${this.showId.showsId}/episodes`)
+        fetch(`https://api.infinum.academy/api/shows/${this.showId}/episodes`)
             .then((data) => data.json())
             .then((response) => this.setState({ showEpisodes: response.data }))
-            .catch(() => console.log("Error"));
+            .catch((error) => console.log(error));
     }
 
 
