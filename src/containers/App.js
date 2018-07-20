@@ -1,14 +1,19 @@
 import React, { Component } from 'react';
-import { ShowComponent } from './components/ShowComponent';
-import { HeaderComponent } from './components/HeaderComponent';
-import { FooterComponent } from './components/FooterComponent';
 import {css} from 'emotion';
 import { Link } from 'react-router-dom';
+import { observer } from 'mobx-react';
+
+import { ShowComponent } from '../components/ShowComponent';
+import { HeaderComponent } from '../components/HeaderComponent';
+import { FooterComponent } from '../components/FooterComponent';
+import { getAll as getAllShows } from '../services/show';
+
+import state from '../state';
 
 const container = css`
     display: grid;
-    grid-template-columns: 10% 80% 10%;
-    grid-template-rows: 1fr 1fr 8fr 1fr 8fr 1fr 2fr;
+    grid-template-columns: 1fr 8fr 1fr;
+    grid-template-rows: 1fr 1fr auto 1fr auto 1fr 2fr;
     background-color: #f7f7f7;
 `;
 
@@ -16,8 +21,8 @@ const favouriteShowsContainer = css`
     grid-column: 2;
     grid-row: 3;
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-    grid-auto-rows: minmax(100px, auto);
+    grid-template-columns: repeat(5, 1fr);
+    grid-auto-rows: repeat(auto-fill, 100px);
     grid-gap: 15px 10px;
 `;
 
@@ -59,19 +64,11 @@ const link = css`
     text-decoration: none;
 `;
 
+@observer
 export class App extends Component {
-    constructor(args) {
-        super(args);
-
-        this.state = {
-            shows: [],
-        };
-    }
 
     componentDidMount() {
-        fetch('https://api.infinum.academy/api/shows')
-            .then((data) => data.json())
-            .then((response) => this.setState({ shows: response.data }));
+        getAllShows(state);
     }
 
     render() {
@@ -88,7 +85,7 @@ export class App extends Component {
 
                 <div className={favouriteShowsContainer}>
                     {
-                        this.state.shows.map((show) => (
+                        state.shows.map((show) => (
                             <ShowComponent key={show._id} show={show} />
                         ))
                     }
@@ -100,7 +97,7 @@ export class App extends Component {
 
                 <div className={allShowsContainer}>
                     {
-                        this.state.shows.map((show) => (
+                        state.shows.map((show) => (
                             <ShowComponent key={show._id} show={show} />
                         ))
                     }

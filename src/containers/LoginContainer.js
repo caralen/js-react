@@ -1,11 +1,14 @@
 import React, {Component} from 'react';
 import { Link } from 'react-router-dom';
 import {css} from 'emotion';
+import { observable } from 'mobx';
+import { observer } from 'mobx-react';
+import { CheckboxComponent } from '../components/CheckboxComponent';
 
-import logo from './pictures/logo.png';
-import passwordLogo from './pictures/show-password.png';
+import { login as loginUser } from '../services/user';
 
-import { CheckboxComponent } from './components/CheckboxComponent';
+import logo from '../pictures/logo.png';
+import passwordLogo from '../pictures/show-password.png';
 
 const container = css`
     display: grid;
@@ -62,55 +65,45 @@ const link = css`
     text-decoration: none;
 `;
 
+@observer
 export class LoginContainer extends Component {
     constructor(props) {
         super(props);
 
-        this.state = {
-            username: '',
-            password: ''
-        }
-
         this._handleUsernameChange = this._handleUsernameChange.bind(this);
         this._handlePasswordChange = this._handlePasswordChange.bind(this);
         this._login = this._login.bind(this);
+        this._toggleShowPassword = this._toggleShowPassword.bind(this);
     }
 
+    @observable
+    componentState = {
+        username: '',
+        password: '',
+        showPassword: false,
+    }
+    
     _handleUsernameChange(event) {
-        this.setState({username: event.target.value});
+        this.componentState.username = event.target.value
     }
 
     _handlePasswordChange(event) {
-        this.setState({password: event.target.value});
+        this.componentState.password = event.target.value
+    }
+
+    _toggleShowPassword() {
+        this.componentState.showPassword = !this.componentState.showPassword;
     }
 
     _login() {
-        fetch('https://api.infinum.academy/api/users/sessions', {
-            method: 'POST',
-            headers: {
-                'Content-type': 'application/json'
-            },
-            body: JSON.stringify({
-                email: this.state.username,
-                password: this.state.password
-            })
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                console.log(data);
-                localStorage.setItem('token', data.data.token)
-                localStorage.setItem('username', this.state.username)
-            })
-            .then(() => {
-                this._redirect();
-            })
-            .catch((error) => console.log(error));
-        }
-        
-    _redirect() {
-        this.props.history.push("/shows")
+        loginUser(this.componentState);
+        this._redirect();
     }
 
+    _redirect() {
+        this.props.history.push("/shows");
+    }
+    
     render() {
         return(
             <div className={container}>
@@ -123,14 +116,14 @@ export class LoginContainer extends Component {
                     <div>
                         <label className={customLabel} htmlFor="username">My username is</label>
                         <br />
-                        <input className={customInput} type="text" id="username" value={this.state.username} onChange={this._handleUsernameChange} />
+                        <input className={customInput} type="text" id="username" value={this.componentState.username} onChange={this._handleUsernameChange} />
                     </div>
 
                     <div>
                         <label className={customLabel} htmlFor="password">and my password is</label>
                         <div>
-                            <input className={customInput} type="password" id="password" value={this.state.password} onChange={this._handlePasswordChange} />
-                            <img alt="eye" src={passwordLogo} width="20" height="20"/>
+                            <input className={customInput} type={this.componentState.showPassword ? 'text' : 'password'} id="password" value={this.componentState.password} onChange={this._handlePasswordChange} />
+                            <img alt="eye" src={passwordLogo} width="20" height="20" onClick={this._toggleShowPassword}/>
                         </div>
                     </div>
 
