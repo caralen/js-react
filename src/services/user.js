@@ -1,7 +1,7 @@
 import { post } from "./api";
 
 export function login(state) {
-    post('users/sessions', {
+    return post('users/sessions', {
         email: state.username,
         password: state.password
     })

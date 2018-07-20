@@ -74,6 +74,7 @@ export class LoginContainer extends Component {
         this._handlePasswordChange = this._handlePasswordChange.bind(this);
         this._login = this._login.bind(this);
         this._toggleShowPassword = this._toggleShowPassword.bind(this);
+        this._redirect = this._redirect.bind(this);
     }
 
     @observable
@@ -96,8 +97,8 @@ export class LoginContainer extends Component {
     }
 
     _login() {
-        loginUser(this.componentState);
-        this._redirect();
+        loginUser(this.componentState)
+            .then(this._redirect);
     }
 
     _redirect() {

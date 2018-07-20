@@ -68,7 +68,7 @@ const link = css`
 export class App extends Component {
 
     componentDidMount() {
-        getAllShows(state);
+        getAllShows();
     }
 
     render() {

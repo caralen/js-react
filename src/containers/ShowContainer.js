@@ -78,8 +78,8 @@ export class ShowContainer extends Component {
     }
 
     componentDidMount() {
-        getShowDetails(state, this.showId);
-        getShowEpisodes(state, this.showId);
+        getShowDetails(this.showId);
+        getShowEpisodes(this.showId);
     }
 
     _redirectBack() {
