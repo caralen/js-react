@@ -2,10 +2,10 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Route } from 'react-router';
 import { BrowserRouter } from 'react-router-dom';
-import { App } from './App';
-import { ShowContainer } from './ShowContainer';
-import { LoginContainer } from './LoginContainer';
-import { RegisterContainer } from './RegisterContainer';
+import { App } from './containers/App';
+import { ShowContainer } from './containers/ShowContainer';
+import { LoginContainer } from './containers/LoginContainer';
+import { RegisterContainer } from './containers/RegisterContainer';
 
 ReactDOM.render((
     <BrowserRouter>

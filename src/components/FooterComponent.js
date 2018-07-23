@@ -58,7 +58,7 @@ export class FooterComponent extends Component {
     render() {
         return(
             <div className={container}>
-                <img className={icon} src={logo} alt="logo" width="100" height="20" />
+                <img className={icon} src={logo} alt="logo" width="100" height="25" />
                 <Link className={about} to="/about">About Us</Link>
                 <Link className={privacy} to="/privacy">Privacy Policy</Link>
                 <Link className={terms} to="/terms">Terms of Service</Link>

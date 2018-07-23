@@ -1,8 +1,12 @@
 import React, {Component} from 'react';
 import {css} from 'emotion';
+import { observable } from 'mobx';
+import { observer } from 'mobx-react';
 
-import logo from './pictures/logo.png';
-import passwordLogo from './pictures/show-password.png';
+import { register as registerUser } from '../services/user';
+
+import logo from '../pictures/logo.png';
+import passwordLogo from '../pictures/show-password.png';
 
 const container = css`
     display: grid;
@@ -49,45 +53,41 @@ const button = css`
     padding: 10px 70px;
 `;
 
+@observer
 export class RegisterContainer extends Component {
 
     constructor(props) {
         super(props);
 
-        this.state = {
-            username: '',
-            password: ''
-        }
-
         this._handleUsernameChange = this._handleUsernameChange.bind(this);
         this._handlePasswordChange = this._handlePasswordChange.bind(this);
         this._register = this._register.bind(this);
+        this._toggleShowPassword = this._toggleShowPassword.bind(this);
+    }
+
+    @observable
+    componentState = {
+        username: '',
+        password: '',
+        showPassword: false,
     }
 
     _handleUsernameChange(event) {
-        this.setState({username: event.target.value});
+        this.componentState.username = event.target.value
     }
 
     _handlePasswordChange(event) {
-        this.setState({password: event.target.value});
+        this.componentState.password = event.target.value
+    }
+
+    _toggleShowPassword() {
+        this.componentState.showPassword = !this.componentState.showPassword;
     }
 
     _register() {
-        fetch('https://api.infinum.academy/api/users', {
-            method: 'POST',
-            headers: {
-                'Content-type': 'application/json'
-            },
-            body: JSON.stringify({
-                email: this.state.username,
-                password: this.state.password
-            })
-        })
-            .then(() => {
-                this._redirect();
-            })
-            .catch((error) => console.log(error));
-        }
+        registerUser(this.componentState);
+        this._redirect();
+    }
         
     _redirect() {
         this.props.history.push("/")
@@ -106,14 +106,14 @@ export class RegisterContainer extends Component {
                     <div>
                         <label className={customLabel} htmlFor="username">My username will be</label>
                         <br />
-                        <input className={customInput} type="text" id="username" value={this.state.username} onChange={this._handleUsernameChange} />
+                        <input className={customInput} type={"text"} id="username" value={this.componentState.username} onChange={this._handleUsernameChange} />
                     </div>
 
                     <div>
                         <label className={customLabel} htmlFor="password">and my password will be</label>
                         <div>
-                            <input className={customInput} type="password" id="password" value={this.state.password} onChange={this._handlePasswordChange} />
-                            <img alt="eye" src={passwordLogo} width="20" height="20"/>
+                            <input className={customInput} type={this.componentState.showPassword ? 'text' : 'password'} id="password" value={this.componentState.password} onChange={this._handlePasswordChange} />
+                            <img alt="eye" src={passwordLogo} width="20" height="20" onClick={this._toggleShowPassword}/>
                         </div>
                     </div>
 
