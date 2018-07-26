@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {css} from 'emotion';
 import { observer } from 'mobx-react';
+import { action } from 'mobx';
 
 import { ShowDetailsComponent } from '../components/ShowDetailsComponent';
 import { ShowEpisodeComponent } from '../components/ShowEpisodeComponent';
@@ -73,8 +74,6 @@ export class ShowContainer extends Component {
         super(args);
         
         this.showId = this.props.match.params.showsId;
-
-        this._redirectBack = this._redirectBack.bind(this);
     }
 
     componentDidMount() {
@@ -82,6 +81,7 @@ export class ShowContainer extends Component {
         getShowEpisodes(this.showId);
     }
 
+    @action.bound
     _redirectBack() {
         this.props.history.push("/shows");
     }

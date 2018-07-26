@@ -6,6 +6,10 @@ import { App } from './containers/App';
 import { ShowContainer } from './containers/ShowContainer';
 import { LoginContainer } from './containers/LoginContainer';
 import { RegisterContainer } from './containers/RegisterContainer';
+import { EpisodeDetailsContainer } from './containers/EpisodeDetailsContainer';
+
+import { configure } from 'mobx';
+configure({ enforceActions: true });
 
 ReactDOM.render((
     <BrowserRouter>
@@ -14,6 +18,7 @@ ReactDOM.render((
             <Route exact path="/register" component={ RegisterContainer } />
             <Route exact path="/shows" component={ App } />
             <Route exact path="/shows/:showsId" component={ ShowContainer } />
+            <Route exact path="/shows/episodes/:episodeId" component={ EpisodeDetailsContainer } />
         </div>
     </BrowserRouter>
 ), document.querySelector('.js-app'));

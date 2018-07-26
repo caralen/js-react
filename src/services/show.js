@@ -1,20 +1,33 @@
 import { get } from './api';
+import { post } from './api';
 import state from '../state';
+import { runInAction } from 'mobx';
 
-export function getAll() {
-    get('shows')
-        .then((data) => state.shows.replace(data))
-        .catch((error) => console.log(error));
+export async function getAll() {
+    const shows = await get('shows');
+    runInAction(() => {
+        state.shows.replace(shows);
+    });
 }
 
-export function getDetails(showId) {
-    get(`shows/${showId}`)
-        .then((data) => state.showDetails = data)
-        .catch((error) => console.log(error));
+export async function getDetails(showId) {
+    const showDetails = await get(`shows/${showId}`);
+    runInAction(() => {
+        state.showDetails = showDetails;
+    });
 }
 
-export function getEpisodes(showId) {
-    get(`shows/${showId}/episodes`)
-        .then((data) => state.showEpisodes.replace(data))
-        .catch((error) => console.log(error));
+export async function getEpisodes(showId) {
+    const showEpisodes = await get(`shows/${showId}/episodes`);
+    runInAction(() => {
+        state.showEpisodes.replace(showEpisodes);
+    });
+}
+
+export async function likeShow(showId) {
+    await post(`shows/${showId}/like`);
+}
+
+export async function dislikeShow(showId) {
+    await post(`shows/${showId}/dislike`);
 }

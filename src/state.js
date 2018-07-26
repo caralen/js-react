@@ -1,4 +1,4 @@
-import { observable } from 'mobx';
+import { observable, computed } from 'mobx';
 
 class State {
 
@@ -10,6 +10,23 @@ class State {
 
     @observable
     showEpisodes = [];
+
+    @observable
+    currentEpisode = '';
+
+    @observable
+    comments = [];
+
+    @computed
+    get username() {
+        return localStorage.getItem('username');
+    }
+
+    @observable
+    rememberedUsername = '';
+
+    @observable
+    rememberedPassword = '';
 }
 
 export default new State();

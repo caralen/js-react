@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {css} from 'emotion';
-import { observable } from 'mobx';
+import { observable, action } from 'mobx';
 import { observer } from 'mobx-react';
 
 import { register as registerUser } from '../services/user';
@@ -56,15 +56,6 @@ const button = css`
 @observer
 export class RegisterContainer extends Component {
 
-    constructor(props) {
-        super(props);
-
-        this._handleUsernameChange = this._handleUsernameChange.bind(this);
-        this._handlePasswordChange = this._handlePasswordChange.bind(this);
-        this._register = this._register.bind(this);
-        this._toggleShowPassword = this._toggleShowPassword.bind(this);
-    }
-
     @observable
     componentState = {
         username: '',
@@ -72,23 +63,28 @@ export class RegisterContainer extends Component {
         showPassword: false,
     }
 
+    @action.bound
     _handleUsernameChange(event) {
         this.componentState.username = event.target.value
     }
 
+    @action.bound
     _handlePasswordChange(event) {
         this.componentState.password = event.target.value
     }
 
+    @action.bound
     _toggleShowPassword() {
         this.componentState.showPassword = !this.componentState.showPassword;
     }
 
+    @action.bound
     _register() {
         registerUser(this.componentState);
         this._redirect();
     }
-        
+
+    @action.bound
     _redirect() {
         this.props.history.push("/")
     }
