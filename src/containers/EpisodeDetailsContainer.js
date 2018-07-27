@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import { css } from 'emotion';
 import { observable, action } from 'mobx';
-import { observer } from 'mobx-react';
+import { observer, inject  } from 'mobx-react';
 import { FooterComponent } from '../components/FooterComponent';
 import { HeaderComponent } from '../components/HeaderComponent';
 import { getEpisode } from '../services/episode';
@@ -9,7 +9,6 @@ import { getComments } from '../services/episode';
 import { CommentComponent } from '../components/CommentComponent';
 import { createComment } from '../services/episode';
 
-import state from '../state';
 import placeholder from '../pictures/placeholder_landscape.png'
 
 const container = css`
@@ -51,17 +50,11 @@ const detailsContainer = css`
     grid-gap: 10px;
 `;
 
-const description = css`
-`;
-
 const postComment = css`
     display: grid;
     grid-template-columns: 4fr 1fr;
     grid-template-rows: 1fr 2fr 0.8fr;
     grid-gap: 10px;
-`;
-
-const comments = css`
 `;
 
 const commentTitle = css`
@@ -126,6 +119,7 @@ const buttonDislike = css`
     outline: none;
 `;
 
+@inject("state")
 @observer
 export class EpisodeDetailsContainer extends Component {
 
@@ -183,21 +177,21 @@ export class EpisodeDetailsContainer extends Component {
 
                 <div className={detailsContainer}>
 
-                    <div className={description}>
-                        <h3>{state.currentEpisode.title}</h3>
-                        <p>{state.currentEpisode.description}</p>
+                    <div>
+                        <h3>{this.props.state.currentEpisode.title}</h3>
+                        <p>{this.props.state.currentEpisode.description}</p>
                     </div>
 
                     <div className={postComment}>
                         <p className={commentTitle}>COMMENTS</p>
-                        <textarea className={commentArea} onChange={this} placeholder="Post a comment..." rows="4" cols="50"></textarea>
+                        <textarea className={commentArea} onChange={this._handleTextChange} placeholder="Post a comment..." rows="4" cols="50"></textarea>
                         <br />
                         <button className={commentButton} onClick={this._createComment}>COMMENT</button>
                     </div>
 
-                    <div className={comments}>
+                    <div>
                         {
-                            state.comments.map((comment) => (
+                            this.props.state.comments.map((comment) => (
                                 <CommentComponent comment={comment}/>
                             ))
                         }

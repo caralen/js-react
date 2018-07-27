@@ -44,27 +44,16 @@ const buttonDislike = css`
 @observer
 export class ShowDetailsComponent extends Component {
 
-    @action.bound
-    _like(showId) {
-        likeShow(showId);
-    }
-    
-    @action.bound
-    _dislike(showId) {
-        dislikeShow(showId);
-    }
-
-
     render() {
-        const { details } = this.props;
+        const { details, like, dislike } = this.props;
 
         return(
             <div>
                 <div className={titleContainer}>
                     <h1 className={title}>{details.title}</h1>
-                    <button className={buttonLike} onClick={() => this._like(details._id)}>Like</button>
+                    <button className={buttonLike} onClick={() => like}>Like</button>
                     <p className={likes}>{details.likesCount}</p>
-                    <button className={buttonDislike} onClick={() => this._dislike(details._id)}>Dislike</button>
+                    <button className={buttonDislike} onClick={() => dislike}>Dislike</button>
                 </div>
                 <p>{details.description}</p>
             </div>

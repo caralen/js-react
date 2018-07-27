@@ -7,18 +7,22 @@ import { ShowContainer } from './containers/ShowContainer';
 import { LoginContainer } from './containers/LoginContainer';
 import { RegisterContainer } from './containers/RegisterContainer';
 import { EpisodeDetailsContainer } from './containers/EpisodeDetailsContainer';
+import { Provider } from 'mobx-react';
+import state from './state';
 
 import { configure } from 'mobx';
 configure({ enforceActions: true });
 
 ReactDOM.render((
-    <BrowserRouter>
-        <div>
-            <Route exact path="/" component={ LoginContainer } />
-            <Route exact path="/register" component={ RegisterContainer } />
-            <Route exact path="/shows" component={ App } />
-            <Route exact path="/shows/:showsId" component={ ShowContainer } />
-            <Route exact path="/shows/episodes/:episodeId" component={ EpisodeDetailsContainer } />
-        </div>
-    </BrowserRouter>
+    <Provider state={state}>
+        <BrowserRouter>
+            <div>
+                <Route exact path="/" component={ LoginContainer } />
+                <Route exact path="/register" component={ RegisterContainer } />
+                <Route exact path="/shows" component={ App } />
+                <Route exact path="/shows/:showsId" component={ ShowContainer } />
+                <Route exact path="/shows/episodes/:episodeId" component={ EpisodeDetailsContainer } />
+            </div>
+        </BrowserRouter>
+    </Provider>
 ), document.querySelector('.js-app'));

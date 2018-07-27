@@ -3,8 +3,6 @@ import {css} from 'emotion';
 import { Link } from 'react-router-dom';
 import { action } from 'mobx';
 
-import state from '../state';
-
 import logo from '../pictures/logo.png';
 
 const container = css`
@@ -39,6 +37,8 @@ export class HeaderComponent extends Component {
     }
     
     render() {
+
+        const { state } = this.props;
 
         return(
             <div className={container}>

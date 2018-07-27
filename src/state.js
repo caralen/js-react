@@ -21,12 +21,6 @@ class State {
     get username() {
         return localStorage.getItem('username');
     }
-
-    @observable
-    rememberedUsername = '';
-
-    @observable
-    rememberedPassword = '';
 }
 
 export default new State();

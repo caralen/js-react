@@ -42,7 +42,7 @@ export class CommentComponent extends Component {
         return(
             <div className={container}>
                 <img className={picture} src={avatar} alt="avatar"></img>
-                <p className={name}>Title</p>
+                <p className={name}>{comment.userEmail}</p>
                 <p className={time}>1min</p>
                 <p className={description}>{comment.text}</p>
             </div>

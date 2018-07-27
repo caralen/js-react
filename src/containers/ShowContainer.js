@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {css} from 'emotion';
-import { observer } from 'mobx-react';
+import { observer, inject } from 'mobx-react';
 import { action } from 'mobx';
 
 import { ShowDetailsComponent } from '../components/ShowDetailsComponent';
@@ -10,8 +10,6 @@ import { FooterComponent } from '../components/FooterComponent';
 import { SidebarComponent } from '../components/SidebarComponent';
 import { getDetails as getShowDetails } from '../services/show';
 import { getEpisodes as getShowEpisodes } from '../services/show';
-
-import state from '../state';
 
 const container = css`
     display: grid;
@@ -67,6 +65,7 @@ const backButton = css`
     border: none;
 `;
 
+@inject("state")
 @observer
 export class ShowContainer extends Component {
     
@@ -86,6 +85,16 @@ export class ShowContainer extends Component {
         this.props.history.push("/shows");
     }
 
+    @action.bound
+    _like(showId) {
+        likeShow(showId);
+    }
+    
+    @action.bound
+    _dislike(showId) {
+        dislikeShow(showId);
+    }
+
 
     render() {
         return (
@@ -98,7 +107,7 @@ export class ShowContainer extends Component {
                 <button className={backButton} onClick={this._redirectBack}>Back</button>
 
                 <div className={detailsContainer}>
-                    <ShowDetailsComponent details={state.showDetails} />
+                    <ShowDetailsComponent details={this.props.state.showDetails} like={this._like} dislike={this._dislike} />
                 </div>
 
                 <div className={sidebar}>
@@ -108,7 +117,7 @@ export class ShowContainer extends Component {
                 <div className={episodesContainer}>
                     <p className={p}>SEASONS & EPISODES</p>
                     {
-                        state.showEpisodes.map((episode) => (
+                        this.props.state.showEpisodes.map((episode) => (
                             <ShowEpisodeComponent key={episode._id} episode={episode} />
                         ))
                     }

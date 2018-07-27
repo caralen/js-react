@@ -3,8 +3,6 @@ import {css} from 'emotion';
 import { observer } from 'mobx-react';
 import { Link } from 'react-router-dom';
 
-import placeholder from '../pictures/placeholder_landscape.png'
-
 const container = css`
     display: grid;
     grid-template-columns: 1fr 4fr;
@@ -38,7 +36,7 @@ export class ShowEpisodeComponent extends Component {
 
         return(
             <div className={container}>
-                <img className={image} src={placeholder} alt="placeholder" height="120" width="200" />
+                <img className={image} src={`https://api.infinum.academy${episode.imageUrl}`} alt="placeholder" height="120" width="200" />
                 <Link className={link} to={`episodes/${episode._id}`}>{episode.title}</Link>
                 <p className={description}>{episode.description}</p>
                 <br />

@@ -99,8 +99,8 @@ export class LoginContainer extends Component {
     _login() {
 
         if(this.componentState.isChecked) {
-            localStorage.setItem('remeberedUsername', this.componentState.username);
-            localStorage.setItem('remeberedPassword', this.componentState.password);
+            localStorage.setItem('token', this.componentState.token)
+            localStorage.setItem('username', this.componentState.username)
         }
 
         loginUser(this.componentState)
