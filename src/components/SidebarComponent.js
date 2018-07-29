@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import {css} from 'emotion';
 import { Link } from 'react-router-dom';
 
-import placeholder from '../pictures/placeholder.png';
-
 const container = css`
     display: grid;
     grid-gap: 10px;
@@ -36,7 +34,7 @@ export class SidebarComponent extends Component {
                     <button className={button}>Favorite</button>
                 </div>
 
-                <img src={placeholder} alt="placeholder" height="320" width="250" />
+                <img src={this.props.pictureSrc} alt="showImage" height="320" width="250" />
 
                 <div>
                     <Link className={link} to="">Official Website</Link>

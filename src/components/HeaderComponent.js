@@ -23,6 +23,7 @@ const p = css`
 const link = css`
     grid-column: 4;
     align-self: center;
+    justify-self: end;
     color: #ff758c;
     text-decoration: none;
 `;
@@ -38,12 +39,10 @@ export class HeaderComponent extends Component {
     
     render() {
 
-        const { state } = this.props;
-
         return(
             <div className={container}>
                 <img className={image} src={logo} alt="logo" width="120" height="30" />
-                <p className={p}>Hi, {state.username}</p>
+                <p className={p}>Hi, {this.props.state.username}</p>
                 <Link className={link} to='/' onClick={this._logout}>Logout</Link>
             </div>
         );

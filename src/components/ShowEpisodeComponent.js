@@ -32,12 +32,12 @@ const link = css`
 export class ShowEpisodeComponent extends Component {
 
     render() {
-        const { episode } = this.props;
+        const { episode, pictureSrc, linkTo } = this.props;
 
         return(
             <div className={container}>
-                <img className={image} src={`https://api.infinum.academy${episode.imageUrl}`} alt="placeholder" height="120" width="200" />
-                <Link className={link} to={`episodes/${episode._id}`}>{episode.title}</Link>
+                <img className={image} src={pictureSrc} alt="placeholder" height="120" width="200" />
+                <Link className={link} to={linkTo}>{episode.title}</Link>
                 <p className={description}>{episode.description}</p>
                 <br />
             </div>

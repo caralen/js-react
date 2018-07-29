@@ -10,11 +10,14 @@ import { FooterComponent } from '../components/FooterComponent';
 import { SidebarComponent } from '../components/SidebarComponent';
 import { getDetails as getShowDetails } from '../services/show';
 import { getEpisodes as getShowEpisodes } from '../services/show';
+import { likeShow } from '../services/show';
+import { dislikeShow } from '../services/show';
 
 const container = css`
     display: grid;
     grid-template-columns: 1fr 4fr 2fr 1fr;
     grid-template-rows: 1fr 1fr auto auto 1fr;
+    background-color: #f7f7f7;
 `;
 
 const detailsContainer = css`
@@ -85,12 +88,10 @@ export class ShowContainer extends Component {
         this.props.history.push("/shows");
     }
 
-    @action.bound
     _like(showId) {
         likeShow(showId);
     }
     
-    @action.bound
     _dislike(showId) {
         dislikeShow(showId);
     }
@@ -101,24 +102,35 @@ export class ShowContainer extends Component {
             <div className={container}>
 
                 <div className={header}>
-                    <HeaderComponent />
+                    <HeaderComponent state={this.props.state} />
                 </div>
 
                 <button className={backButton} onClick={this._redirectBack}>Back</button>
 
                 <div className={detailsContainer}>
-                    <ShowDetailsComponent details={this.props.state.showDetails} like={this._like} dislike={this._dislike} />
+                    <ShowDetailsComponent 
+                        details={this.props.state.showDetails} 
+                        like={this._like} 
+                        dislike={this._dislike} 
+                    />
                 </div>
 
                 <div className={sidebar}>
-                    <SidebarComponent />
+                    <SidebarComponent 
+                        pictureSrc={`https://api.infinum.academy${this.props.state.showDetails.imageUrl}`}
+                    />
                 </div>
 
                 <div className={episodesContainer}>
                     <p className={p}>SEASONS & EPISODES</p>
                     {
                         this.props.state.showEpisodes.map((episode) => (
-                            <ShowEpisodeComponent key={episode._id} episode={episode} />
+                            <ShowEpisodeComponent 
+                                key={episode._id} 
+                                episode={episode}
+                                pictureSrc={`https://api.infinum.academy${episode.imageUrl}`}
+                                linkTo={`episodes/${episode._id}`} 
+                            />
                         ))
                     }
                 </div>

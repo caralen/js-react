@@ -85,7 +85,11 @@ export class App extends Component {
                 <div className={favouriteShowsContainer}>
                     {
                         this.props.state.shows.map((show) => (
-                            <ShowComponent key={show._id} show={show} />
+                            <ShowComponent 
+                                key={show._id} 
+                                show={show} 
+                                pictureSrc={`https://api.infinum.academy${show.imageUrl}`}
+                                linkTo={`/shows/${show._id}`}/>
                         ))
                     }
                 </div>
@@ -97,7 +101,12 @@ export class App extends Component {
                 <div className={allShowsContainer}>
                     {
                         this.props.state.shows.map((show) => (
-                            <ShowComponent key={show._id} show={show} />
+                            <ShowComponent 
+                                key={show._id} 
+                                show={show} 
+                                pictureSrc={`https://api.infinum.academy${show.imageUrl}`}
+                                linkTo={`/shows/${show._id}`}
+                            />
                         ))
                     }
                 </div>

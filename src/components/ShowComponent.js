@@ -11,18 +11,18 @@ const link = css`
 @observer
 export class ShowComponent extends Component {
     render() {
-        const { show } = this.props;
+        const { show, pictureSrc, linkTo } = this.props;
 
         return(
             <div>
                {
                 show.imageId
                 ? <p>Image id</p>
-                : <img src={`https://api.infinum.academy${show.imageUrl}`} alt="placeholder" height="250" width="190" />
+                : <img src={pictureSrc} alt="showImage" height="250" width="190" />
                } 
 
                 <br/>
-                <Link className={link} to={`/shows/${show._id}`}>{show.title}</Link>
+                <Link className={link} to={linkTo}>{show.title}</Link>
             </div>
         );
     }

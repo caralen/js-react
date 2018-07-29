@@ -1,10 +1,6 @@
 import React, { Component } from 'react';
 import {css} from 'emotion';
 import { observer } from 'mobx-react';
-import { action } from 'mobx';
-
-import { likeShow } from '../services/show';
-import { dislikeShow } from '../services/show';
 
 const titleContainer = css`
     display: grid;
@@ -46,14 +42,14 @@ export class ShowDetailsComponent extends Component {
 
     render() {
         const { details, like, dislike } = this.props;
-
+        
         return(
             <div>
                 <div className={titleContainer}>
                     <h1 className={title}>{details.title}</h1>
-                    <button className={buttonLike} onClick={() => like}>Like</button>
+                    <button className={buttonLike} onClick={() => like(details._id)}>Like</button>
                     <p className={likes}>{details.likesCount}</p>
-                    <button className={buttonDislike} onClick={() => dislike}>Dislike</button>
+                    <button className={buttonDislike} onClick={() => dislike(details._id)}>Dislike</button>
                 </div>
                 <p>{details.description}</p>
             </div>

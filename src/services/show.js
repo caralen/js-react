@@ -26,8 +26,10 @@ export async function getEpisodes(showId) {
 
 export async function likeShow(showId) {
     await post(`shows/${showId}/like`);
+    getDetails(showId);
 }
 
 export async function dislikeShow(showId) {
     await post(`shows/${showId}/dislike`);
+    getDetails(showId);
 }
