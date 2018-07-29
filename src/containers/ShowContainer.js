@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {css} from 'emotion';
-import { observer } from 'mobx-react';
+import { observer, inject } from 'mobx-react';
+import { action } from 'mobx';
 
 import { ShowDetailsComponent } from '../components/ShowDetailsComponent';
 import { ShowEpisodeComponent } from '../components/ShowEpisodeComponent';
@@ -9,13 +10,14 @@ import { FooterComponent } from '../components/FooterComponent';
 import { SidebarComponent } from '../components/SidebarComponent';
 import { getDetails as getShowDetails } from '../services/show';
 import { getEpisodes as getShowEpisodes } from '../services/show';
-
-import state from '../state';
+import { likeShow } from '../services/show';
+import { dislikeShow } from '../services/show';
 
 const container = css`
     display: grid;
     grid-template-columns: 1fr 4fr 2fr 1fr;
     grid-template-rows: 1fr 1fr auto auto 1fr;
+    background-color: #f7f7f7;
 `;
 
 const detailsContainer = css`
@@ -66,6 +68,7 @@ const backButton = css`
     border: none;
 `;
 
+@inject("state")
 @observer
 export class ShowContainer extends Component {
     
@@ -73,8 +76,6 @@ export class ShowContainer extends Component {
         super(args);
         
         this.showId = this.props.match.params.showsId;
-
-        this._redirectBack = this._redirectBack.bind(this);
     }
 
     componentDidMount() {
@@ -82,8 +83,17 @@ export class ShowContainer extends Component {
         getShowEpisodes(this.showId);
     }
 
+    @action.bound
     _redirectBack() {
         this.props.history.push("/shows");
+    }
+
+    _like(showId) {
+        likeShow(showId);
+    }
+    
+    _dislike(showId) {
+        dislikeShow(showId);
     }
 
 
@@ -92,24 +102,35 @@ export class ShowContainer extends Component {
             <div className={container}>
 
                 <div className={header}>
-                    <HeaderComponent />
+                    <HeaderComponent state={this.props.state} />
                 </div>
 
                 <button className={backButton} onClick={this._redirectBack}>Back</button>
 
                 <div className={detailsContainer}>
-                    <ShowDetailsComponent details={state.showDetails} />
+                    <ShowDetailsComponent 
+                        details={this.props.state.showDetails} 
+                        like={this._like} 
+                        dislike={this._dislike} 
+                    />
                 </div>
 
                 <div className={sidebar}>
-                    <SidebarComponent />
+                    <SidebarComponent 
+                        pictureSrc={`https://api.infinum.academy${this.props.state.showDetails.imageUrl}`}
+                    />
                 </div>
 
                 <div className={episodesContainer}>
                     <p className={p}>SEASONS & EPISODES</p>
                     {
-                        state.showEpisodes.map((episode) => (
-                            <ShowEpisodeComponent key={episode._id} episode={episode} />
+                        this.props.state.showEpisodes.map((episode) => (
+                            <ShowEpisodeComponent 
+                                key={episode._id} 
+                                episode={episode}
+                                pictureSrc={`https://api.infinum.academy${episode.imageUrl}`}
+                                linkTo={`episodes/${episode._id}`} 
+                            />
                         ))
                     }
                 </div>

@@ -3,8 +3,6 @@ import { Link } from 'react-router-dom';
 import {css} from 'emotion';
 import { observer } from 'mobx-react';
 
-import placeholder from '../pictures/placeholder.png'
-
 const link = css`
     color: #3a3a3a;
     text-decoration: none;
@@ -13,18 +11,18 @@ const link = css`
 @observer
 export class ShowComponent extends Component {
     render() {
-        const { show } = this.props;
+        const { show, pictureSrc, linkTo } = this.props;
 
         return(
             <div>
                {
                 show.imageId
                 ? <p>Image id</p>
-                : <img src={placeholder} alt="placeholder" height="250" width="190" />
+                : <img src={pictureSrc} alt="showImage" height="250" width="190" />
                } 
 
                 <br/>
-                <Link className={link} to={`/shows/${show._id}`}>{show.title}</Link>
+                <Link className={link} to={linkTo}>{show.title}</Link>
             </div>
         );
     }

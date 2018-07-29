@@ -1,10 +1,8 @@
 import React, {Component} from 'react';
 import { Link } from 'react-router-dom';
 import {css} from 'emotion';
-import { observable } from 'mobx';
+import { observable, action } from 'mobx';
 import { observer } from 'mobx-react';
-import { CheckboxComponent } from '../components/CheckboxComponent';
-
 import { login as loginUser } from '../services/user';
 
 import logo from '../pictures/logo.png';
@@ -67,42 +65,56 @@ const link = css`
 
 @observer
 export class LoginContainer extends Component {
-    constructor(props) {
-        super(props);
-
-        this._handleUsernameChange = this._handleUsernameChange.bind(this);
-        this._handlePasswordChange = this._handlePasswordChange.bind(this);
-        this._login = this._login.bind(this);
-        this._toggleShowPassword = this._toggleShowPassword.bind(this);
-        this._redirect = this._redirect.bind(this);
-    }
 
     @observable
     componentState = {
         username: '',
         password: '',
         showPassword: false,
+        isChecked: false,
+    }
+
+    @action
+    componentDidMount() {
+        this.componentState.username = localStorage.getItem('remeberedUsername');
+        this.componentState.password = localStorage.getItem('remeberedPassword');
     }
     
+    @action.bound
     _handleUsernameChange(event) {
         this.componentState.username = event.target.value
     }
 
+    @action.bound
     _handlePasswordChange(event) {
         this.componentState.password = event.target.value
     }
 
+    @action.bound
     _toggleShowPassword() {
         this.componentState.showPassword = !this.componentState.showPassword;
     }
 
+    @action.bound
     _login() {
+
+        if(this.componentState.isChecked) {
+            localStorage.setItem('token', this.componentState.token)
+            localStorage.setItem('username', this.componentState.username)
+        }
+
         loginUser(this.componentState)
             .then(this._redirect);
     }
 
+    @action.bound
     _redirect() {
         this.props.history.push("/shows");
+    }
+
+    @action.bound
+    _handleCheckboxChange() {
+        this.componentState.isChecked = !this.componentState.isChecked;
     }
     
     render() {
@@ -128,7 +140,9 @@ export class LoginContainer extends Component {
                         </div>
                     </div>
 
-                    <CheckboxComponent />
+                    <div>
+                        <input type="checkbox" checked={this.componentState.isChecked} onChange={this._handleCheckboxChange}/> Remember me
+                    </div>
                     <button className={button} onClick={this._login}>Login</button>
 
                 </div>

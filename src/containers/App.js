@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
 import {css} from 'emotion';
 import { Link } from 'react-router-dom';
-import { observer } from 'mobx-react';
+import { observer, inject  } from 'mobx-react';
 
 import { ShowComponent } from '../components/ShowComponent';
 import { HeaderComponent } from '../components/HeaderComponent';
 import { FooterComponent } from '../components/FooterComponent';
 import { getAll as getAllShows } from '../services/show';
-
-import state from '../state';
 
 const container = css`
     display: grid;
@@ -64,6 +62,7 @@ const link = css`
     text-decoration: none;
 `;
 
+@inject("state")
 @observer
 export class App extends Component {
 
@@ -76,7 +75,7 @@ export class App extends Component {
 
             <div className={container}>
                 <div className={header}>
-                    <HeaderComponent />
+                    <HeaderComponent state={this.props.state} />
                 </div>
 
                 <div className={favTitle}>
@@ -85,8 +84,12 @@ export class App extends Component {
 
                 <div className={favouriteShowsContainer}>
                     {
-                        state.shows.map((show) => (
-                            <ShowComponent key={show._id} show={show} />
+                        this.props.state.shows.map((show) => (
+                            <ShowComponent 
+                                key={show._id} 
+                                show={show} 
+                                pictureSrc={`https://api.infinum.academy${show.imageUrl}`}
+                                linkTo={`/shows/${show._id}`}/>
                         ))
                     }
                 </div>
@@ -97,8 +100,13 @@ export class App extends Component {
 
                 <div className={allShowsContainer}>
                     {
-                        state.shows.map((show) => (
-                            <ShowComponent key={show._id} show={show} />
+                        this.props.state.shows.map((show) => (
+                            <ShowComponent 
+                                key={show._id} 
+                                show={show} 
+                                pictureSrc={`https://api.infinum.academy${show.imageUrl}`}
+                                linkTo={`/shows/${show._id}`}
+                            />
                         ))
                     }
                 </div>

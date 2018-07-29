@@ -8,7 +8,8 @@ export function post(model, parameter) {
     return fetch(`https://api.infinum.academy/api/${model}`, {
         method: 'POST',
         headers: {
-            'Content-type': 'application/json'
+            'Content-type': 'application/json',
+            'Authorization': localStorage.getItem('token'),
         },
         body: JSON.stringify(parameter)
     })

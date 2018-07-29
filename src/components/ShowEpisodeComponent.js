@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import {css} from 'emotion';
 import { observer } from 'mobx-react';
-
-import placeholder from '../pictures/placeholder_landscape.png'
+import { Link } from 'react-router-dom';
 
 const container = css`
     display: grid;
@@ -17,26 +16,30 @@ const image = css`
     align-self: center;
 `;
 
-const title = css`
-    grid-row: 1;
-    grid-column: 2;
-`;
-
 const description = css`
     grid-row: 2;
     grid-column: 2;
 `;
 
+const link = css`
+    grid-row: 1;
+    grid-column: 2;
+    color: black;
+    text-decoration: none;
+`;
+
 @observer
 export class ShowEpisodeComponent extends Component {
+
     render() {
-        const { episode } = this.props;
+        const { episode, pictureSrc, linkTo } = this.props;
 
         return(
             <div className={container}>
-                <img className={image} src={placeholder} alt="placeholder" height="120" width="200" />
-                <h3 className={title}>{episode.title}</h3>
+                <img className={image} src={pictureSrc} alt="placeholder" height="120" width="200" />
+                <Link className={link} to={linkTo}>{episode.title}</Link>
                 <p className={description}>{episode.description}</p>
+                <br />
             </div>
         );
     }

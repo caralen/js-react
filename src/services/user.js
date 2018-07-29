@@ -5,10 +5,6 @@ export function login(state) {
         email: state.username,
         password: state.password
     })
-        .then((data) => {
-            localStorage.setItem('token', data.token)
-            localStorage.setItem('username', state.username)
-        })
         .catch((error) => console.log(error));
 }
 
