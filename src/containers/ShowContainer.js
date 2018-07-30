@@ -96,6 +96,11 @@ export class ShowContainer extends Component {
         dislikeShow(showId);
     }
 
+    @action.bound
+    _toggleModal() {
+        this.props.history.push(`/shows/${this.showId}/modal`);
+    }
+
 
     render() {
         return (
@@ -118,6 +123,7 @@ export class ShowContainer extends Component {
                 <div className={sidebar}>
                     <SidebarComponent 
                         pictureSrc={`https://api.infinum.academy${this.props.state.showDetails.imageUrl}`}
+                        toggleModal={this._toggleModal}
                     />
                 </div>
 

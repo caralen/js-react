@@ -30,7 +30,7 @@ export class SidebarComponent extends Component {
         return(
             <div className={container}>
                 <div>
-                    <button className={button}>Add episode</button>
+                    <button className={button} onClick={this.props.toggleModal}>Add episode</button>
                     <button className={button}>Favorite</button>
                 </div>
 

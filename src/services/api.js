@@ -16,3 +16,14 @@ export function post(model, parameter) {
         .then((res) => res.json())
         .then((res) => res.data);
 }
+
+export function uploadPost(model, data) {
+    return fetch(`https://api.infinum.academy/api/${model}`, {
+        method: 'POST',
+        headers: {
+          'Authorization': localStorage.getItem('token'),
+        },
+        body: data,
+      }).then((res) => res.json())
+        .then((res) => res.data);
+}

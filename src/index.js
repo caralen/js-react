@@ -8,6 +8,8 @@ import { LoginContainer } from './containers/LoginContainer';
 import { RegisterContainer } from './containers/RegisterContainer';
 import { EpisodeDetailsContainer } from './containers/EpisodeDetailsContainer';
 import { Provider } from 'mobx-react';
+import { PageModal } from './containers/PageModal';
+
 import state from './state';
 
 import { configure } from 'mobx';
@@ -20,7 +22,8 @@ ReactDOM.render((
                 <Route exact path="/" component={ LoginContainer } />
                 <Route exact path="/register" component={ RegisterContainer } />
                 <Route exact path="/shows" component={ App } />
-                <Route exact path="/shows/:showsId" component={ ShowContainer } />
+                <Route path="/shows/:showsId" component={ ShowContainer } />
+                <Route path="/shows/:showsId/modal" component={PageModal} />
                 <Route exact path="/shows/episodes/:episodeId" component={ EpisodeDetailsContainer } />
             </div>
         </BrowserRouter>

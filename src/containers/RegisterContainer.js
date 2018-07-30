@@ -79,7 +79,9 @@ export class RegisterContainer extends Component {
     }
 
     @action.bound
-    _register() {
+    _register(event) {
+        event.preventDefault();
+        
         registerUser(this.componentState);
         this._redirect();
     }
@@ -97,7 +99,7 @@ export class RegisterContainer extends Component {
                     <img src={logo} alt="logo" width="120" height="30" />
                 </div>
 
-                <div className={formContainer}>
+                <form className={formContainer} onSubmit={this._register}>
 
                     <div>
                         <label className={customLabel} htmlFor="username">My username will be</label>
@@ -113,9 +115,9 @@ export class RegisterContainer extends Component {
                         </div>
                     </div>
 
-                    <button className={button} onClick={this._register}>Register</button>
+                    <input className={button} type="button" value="Register"/>
 
-                </div>
+                </form>
 
             </div>
         );

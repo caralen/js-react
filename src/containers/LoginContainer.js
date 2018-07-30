@@ -46,7 +46,7 @@ const customInput = css`
     border-bottom: 1px solid #ff758c;
     font-size: 25px;
     font-family: Arial, Helvetica, sans-serif;
-    color: #ff758c
+    color: #ff758c;
 `;
 
 const button = css`
@@ -96,7 +96,8 @@ export class LoginContainer extends Component {
     }
 
     @action.bound
-    _login() {
+    _login(event) {
+        event.preventDefault();
 
         if(this.componentState.isChecked) {
             localStorage.setItem('token', this.componentState.token)
@@ -121,10 +122,10 @@ export class LoginContainer extends Component {
         return(
             <div className={container}>
                 <div className={header}>
-                    <img src={logo} alt="logo" width="120" height="30" />
+                    <img src={logo} alt="logo" width="120" height="30"/>
                 </div>
 
-                <div className={formContainer}>
+                <form className={formContainer} onSubmit={this._login}>
 
                     <div>
                         <label className={customLabel} htmlFor="username">My username is</label>
@@ -143,9 +144,9 @@ export class LoginContainer extends Component {
                     <div>
                         <input type="checkbox" checked={this.componentState.isChecked} onChange={this._handleCheckboxChange}/> Remember me
                     </div>
-                    <button className={button} onClick={this._login}>Login</button>
+                    <input type="submit" className={button} value="Login" />
 
-                </div>
+                </form>
 
                 <div className={footer}>
                     Still don't have an account?  <Link className={link} to="/register">Register</Link>
