@@ -34,8 +34,5 @@ export async function createEpisode(data) {
 }
 
 export async function uploadFile(data) {
-    const resp = await uploadPost(`media`, data);
-    runInAction(() => {
-        console.log(resp);
-    });
+    return await uploadPost(`media`, data);
   }

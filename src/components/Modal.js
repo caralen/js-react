@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { observer } from 'mobx-react';
 import { css, cx } from 'emotion';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faTimes } from '@fortawesome/free-solid-svg-icons'
 
 const main = css`
   background-color: white;
@@ -17,8 +19,12 @@ const sizer = (height, width) => css`
 
 const button = css`
   position: absolute;
-  top: 0;
-  right: 0;
+  color: #a3a3a3;
+  top: 10px;
+  right: 10px;
+  border: solid #ededed 2px;
+  border-radius: 50%;
+  padding: 10px;
 `;
 
 
@@ -30,10 +36,10 @@ export class Modal extends Component {
     return (
       <div className={cx(main, className, sizer(height, width))}>
         {children}
-        <button
-          className={button}
-          onClick={this.props.close}
-        >close</button>
+
+        <span className={button} onClick={this.props.close}>
+          <FontAwesomeIcon icon={faTimes} />
+        </span>
       </div>
     );
   }

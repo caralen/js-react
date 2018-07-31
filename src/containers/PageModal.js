@@ -6,6 +6,8 @@ import Dropzone from 'react-dropzone';
 import { Modal } from '../components/Modal';
 import { createEpisode } from '../services/episode';
 import { uploadFile } from '../services/episode';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCamera } from '@fortawesome/free-solid-svg-icons'
 
 const main = css`
   display: grid;
@@ -60,6 +62,12 @@ const select = css`
   outline: none;
 `;
 
+const camera = css`
+  color: #ff758c;
+  text-align: center;
+  padding-top: 20px;
+`;
+
 const textGrey = css`
   font-size: 20px;
   font-family: Arial, Helvetica, sans-serif;
@@ -83,15 +91,14 @@ export class PageModal extends Component {
     mediaId: '',
     title: '',
     description: '',
-    episodeNumber: '',
-    season: '',
+    episodeNumber: '1',
+    season: '1',
   };
 
   @action.bound
-  _onInputChange(fieldName, fieldValue = 'value') {
+  _onInputChange(fieldName) {
     return action((event) => {
-      const value = event.target[fieldValue];
-      this.componentState[fieldName] = value;
+      this.componentState[fieldName] = event.target.value;
     });
   }
 
@@ -102,16 +109,17 @@ export class PageModal extends Component {
 
   @action.bound
   _onDrop(files) {
-    console.log(files);
     const data = new FormData();
     data.append('file', files[0]);
     uploadFile(data)
+      .then((res) => this.componentState.mediaId = res._id);
   }
 
   @action.bound
   _submitForm(event) {
     event.preventDefault();
-    createEpisode(JSON.stringify(this.componentState));
+    createEpisode(this.componentState)
+      .then(this._closeModal);
   }
 
   render() {
@@ -126,6 +134,9 @@ export class PageModal extends Component {
             <form onSubmit={this._submitForm}>
 
               <Dropzone onDrop={this._onDrop}>
+                <div className={camera}>
+                  <FontAwesomeIcon icon={faCamera} size="2x" />
+                </div>
                 <p className={textGrey}>Drag your image here or</p>
                 <p className={textPink}>browse</p>
               </Dropzone>

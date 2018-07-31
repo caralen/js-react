@@ -7,7 +7,7 @@ import logo from '../pictures/logo.png';
 
 const container = css`
     display: grid;
-    grid-template-columns: 1fr 7fr 1fr 1fr;
+    grid-template-columns: 1fr 7fr 2fr 1fr;
 `;
 
 const image = css`
@@ -26,6 +26,7 @@ const link = css`
     justify-self: end;
     color: #ff758c;
     text-decoration: none;
+    padding-right: 20px;
 `;
 
 
@@ -33,8 +34,13 @@ export class HeaderComponent extends Component {
 
     @action.bound
     _logout() {
-        localStorage.removeItem('token');
-        localStorage.removeItem('username');
+        if(this.props.state.token){
+            this.props.state.token = '';
+            this.props.state.username = '';
+        } else {
+            localStorage.removeItem('token');
+            localStorage.removeItem('username');
+        }
     }
     
     render() {
@@ -42,7 +48,7 @@ export class HeaderComponent extends Component {
         return(
             <div className={container}>
                 <img className={image} src={logo} alt="logo" width="120" height="30" />
-                <p className={p}>Hi, {this.props.state.username}</p>
+                <p className={p}>Hi, {this.props.state.token ? this.props.state.username : localStorage.getItem('username')}</p>
                 <Link className={link} to='/' onClick={this._logout}>Logout</Link>
             </div>
         );

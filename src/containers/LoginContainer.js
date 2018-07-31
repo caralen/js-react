@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import { Link } from 'react-router-dom';
 import {css} from 'emotion';
 import { observable, action } from 'mobx';
-import { observer } from 'mobx-react';
+import { observer, inject } from 'mobx-react';
 import { login as loginUser } from '../services/user';
 
 import logo from '../pictures/logo.png';
@@ -56,6 +56,7 @@ const button = css`
     border: none;
     border-radius: 5px;
     padding: 10px 70px;
+    outline: none;
 `;
 
 const link = css`
@@ -63,6 +64,7 @@ const link = css`
     text-decoration: none;
 `;
 
+@inject("state")
 @observer
 export class LoginContainer extends Component {
 
@@ -96,12 +98,16 @@ export class LoginContainer extends Component {
     }
 
     @action.bound
+    _handleCheckboxChange() {
+        this.componentState.isChecked = !this.componentState.isChecked;
+    }
+
+    @action.bound
     _login(event) {
         event.preventDefault();
 
-        if(this.componentState.isChecked) {
-            localStorage.setItem('token', this.componentState.token)
-            localStorage.setItem('username', this.componentState.username)
+        if(this.componentState.isChecked){
+            this.props.state.rememberMe = true;
         }
 
         loginUser(this.componentState)
@@ -111,11 +117,6 @@ export class LoginContainer extends Component {
     @action.bound
     _redirect() {
         this.props.history.push("/shows");
-    }
-
-    @action.bound
-    _handleCheckboxChange() {
-        this.componentState.isChecked = !this.componentState.isChecked;
     }
     
     render() {

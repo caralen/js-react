@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import {css} from 'emotion';
 import { observer, inject } from 'mobx-react';
 import { action } from 'mobx';
-
 import { ShowDetailsComponent } from '../components/ShowDetailsComponent';
 import { ShowEpisodeComponent } from '../components/ShowEpisodeComponent';
 import { HeaderComponent } from '../components/HeaderComponent';
@@ -12,6 +11,8 @@ import { getDetails as getShowDetails } from '../services/show';
 import { getEpisodes as getShowEpisodes } from '../services/show';
 import { likeShow } from '../services/show';
 import { dislikeShow } from '../services/show';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons'
 
 const container = css`
     display: grid;
@@ -61,11 +62,12 @@ const backButton = css`
     grid-column: 1;
     grid-row: 2;
     justify-self: center;
+    align-self: center;
+    background-color: white;
     color: #ff758c;
-    font-family: Arial, Helvetica, sans-serif;
-    background-color: #ededed;
+    border: solid #ededed 1px;
     border-radius: 100%;
-    border: none;
+    padding: 10px;
 `;
 
 @inject("state")
@@ -110,7 +112,9 @@ export class ShowContainer extends Component {
                     <HeaderComponent state={this.props.state} />
                 </div>
 
-                <button className={backButton} onClick={this._redirectBack}>Back</button>
+                <div className={backButton} onClick={this._redirectBack}>
+                    <FontAwesomeIcon icon={faArrowLeft}/>
+                </div>
 
                 <div className={detailsContainer}>
                     <ShowDetailsComponent 
