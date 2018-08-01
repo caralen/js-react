@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {css} from 'emotion';
 import { Link } from 'react-router-dom';
-import { observer, inject  } from 'mobx-react';
+import { observer, inject } from 'mobx-react';
 
 import { ShowComponent } from '../components/ShowComponent';
 import { HeaderComponent } from '../components/HeaderComponent';

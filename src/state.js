@@ -1,4 +1,4 @@
-import { observable, computed } from 'mobx';
+import { observable } from 'mobx';
 
 class State {
 
@@ -17,10 +17,11 @@ class State {
     @observable
     comments = [];
 
-    @computed
-    get username() {
-        return localStorage.getItem('username');
-    }
+    @observable
+    token = '';
+
+    @observable
+    username = '';
 }
 
 export default new State();

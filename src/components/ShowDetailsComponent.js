@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import {css} from 'emotion';
 import { observer } from 'mobx-react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faThumbsUp } from '@fortawesome/free-solid-svg-icons'
+import { faThumbsDown } from '@fortawesome/free-solid-svg-icons'
 
 const titleContainer = css`
     display: grid;
@@ -17,13 +20,16 @@ const title = css`
 const buttonLike = css`
     grid-column: 2;
     grid-row: 2;
-    background-color: #ededed;
-    border-radius: 20px;
-    border: none;
-    outline: none;
+    background-color: white;
+    color: #ff758c;
+    border: solid #ededed 2px;
+    border-radius: 50%;
+    padding: 10px;
 `;
 
 const likes = css`
+    justify-self: center;
+    align-self: center;
     grid-column: 3;
     grid-row: 2;
 `;
@@ -31,10 +37,11 @@ const likes = css`
 const buttonDislike = css`
     grid-column: 4;
     grid-row: 2;
-    background-color: #ededed;
-    border-radius: 20px;
-    border: none;
-    outline: none;
+    background-color: white;
+    color: #ff758c;
+    border: solid #ededed 2px;
+    border-radius: 50%;
+    padding: 10px;
 `;
 
 @observer
@@ -47,9 +54,15 @@ export class ShowDetailsComponent extends Component {
             <div>
                 <div className={titleContainer}>
                     <h1 className={title}>{details.title}</h1>
-                    <button className={buttonLike} onClick={() => like(details._id)}>Like</button>
-                    <p className={likes}>{details.likesCount}</p>
-                    <button className={buttonDislike} onClick={() => dislike(details._id)}>Dislike</button>
+                    <div className={buttonLike} onClick={() => like(details._id)} >
+                        <FontAwesomeIcon icon={faThumbsUp} size="2x" />
+                    </div>
+                    <span className={likes}>
+                        <p>{details.likesCount}</p>
+                    </span>
+                    <div className={buttonDislike} onClick={() => dislike(details._id)} >
+                        <FontAwesomeIcon icon={faThumbsDown} size="2x" />
+                    </div>
                 </div>
                 <p>{details.description}</p>
             </div>

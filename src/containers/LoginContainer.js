@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import { Link } from 'react-router-dom';
 import {css} from 'emotion';
 import { observable, action } from 'mobx';
-import { observer } from 'mobx-react';
+import { observer, inject } from 'mobx-react';
 import { login as loginUser } from '../services/user';
 
 import logo from '../pictures/logo.png';
@@ -46,7 +46,7 @@ const customInput = css`
     border-bottom: 1px solid #ff758c;
     font-size: 25px;
     font-family: Arial, Helvetica, sans-serif;
-    color: #ff758c
+    color: #ff758c;
 `;
 
 const button = css`
@@ -56,6 +56,7 @@ const button = css`
     border: none;
     border-radius: 5px;
     padding: 10px 70px;
+    outline: none;
 `;
 
 const link = css`
@@ -63,6 +64,7 @@ const link = css`
     text-decoration: none;
 `;
 
+@inject("state")
 @observer
 export class LoginContainer extends Component {
 
@@ -96,11 +98,16 @@ export class LoginContainer extends Component {
     }
 
     @action.bound
-    _login() {
+    _handleCheckboxChange() {
+        this.componentState.isChecked = !this.componentState.isChecked;
+    }
 
-        if(this.componentState.isChecked) {
-            localStorage.setItem('token', this.componentState.token)
-            localStorage.setItem('username', this.componentState.username)
+    @action.bound
+    _login(event) {
+        event.preventDefault();
+
+        if(this.componentState.isChecked){
+            this.props.state.rememberMe = true;
         }
 
         loginUser(this.componentState)
@@ -111,20 +118,15 @@ export class LoginContainer extends Component {
     _redirect() {
         this.props.history.push("/shows");
     }
-
-    @action.bound
-    _handleCheckboxChange() {
-        this.componentState.isChecked = !this.componentState.isChecked;
-    }
     
     render() {
         return(
             <div className={container}>
                 <div className={header}>
-                    <img src={logo} alt="logo" width="120" height="30" />
+                    <img src={logo} alt="logo" width="120" height="30"/>
                 </div>
 
-                <div className={formContainer}>
+                <form className={formContainer} onSubmit={this._login}>
 
                     <div>
                         <label className={customLabel} htmlFor="username">My username is</label>
@@ -143,9 +145,9 @@ export class LoginContainer extends Component {
                     <div>
                         <input type="checkbox" checked={this.componentState.isChecked} onChange={this._handleCheckboxChange}/> Remember me
                     </div>
-                    <button className={button} onClick={this._login}>Login</button>
+                    <input type="submit" className={button} value="Login" />
 
-                </div>
+                </form>
 
                 <div className={footer}>
                     Still don't have an account?  <Link className={link} to="/register">Register</Link>
