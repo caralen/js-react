@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { observable, action } from 'mobx';
 import { observer } from 'mobx-react';
-import { css } from 'emotion';
+import { css, cx } from 'emotion';
 import Dropzone from 'react-dropzone';
 import { Modal } from '../components/Modal';
 import { createEpisode } from '../services/episode';
@@ -31,7 +31,7 @@ const text = css`
   border: none;
   font-size: 20px;
   font-family: Arial, Helvetica, sans-serif;
-  color: #a3a3a3;
+  color: #666666;
   outline: none;
   border-bottom: 1px solid #e5e5e5;
 `;
@@ -43,13 +43,14 @@ const button = css`
   border: none;
   border-radius: 5px;
   padding: 10px 70px;
+  cursor: pointer;
 `;
 
 const label = css`
   border: none;
   font-size: 20px;
   font-family: Arial, Helvetica, sans-serif;
-  color: #a3a3a3;
+  color: #666666;
   outline: none;
 `;
 
@@ -60,6 +61,10 @@ const select = css`
   font-family: Arial, Helvetica, sans-serif;
   color: #ff758c;
   outline: none;
+`;
+
+const image = css`
+  padding: 50px;
 `;
 
 const camera = css`
@@ -85,6 +90,13 @@ const textPink = css`
 @observer
 export class PageModal extends Component {
 
+  constructor(props) {
+    super(props)
+        this.state = {
+            imageFiles: []
+        }
+  }
+
   @observable
   componentState = {
     showId: this.props.match.params.showsId,
@@ -109,6 +121,9 @@ export class PageModal extends Component {
 
   @action.bound
   _onDrop(files) {
+    this.setState({
+      imageFiles: files
+    })
     const data = new FormData();
     data.append('file', files[0]);
     uploadFile(data)
@@ -120,6 +135,14 @@ export class PageModal extends Component {
     event.preventDefault();
     createEpisode(this.componentState)
       .then(this._closeModal);
+  }
+
+  _createOptions = () => {
+    let options = []
+    for (var i = 1; i <= 30; i++) {
+      options.push(<option value={i}>{i}</option>)
+    }
+    return options
   }
 
   render() {
@@ -134,11 +157,28 @@ export class PageModal extends Component {
             <form onSubmit={this._submitForm}>
 
               <Dropzone onDrop={this._onDrop}>
-                <div className={camera}>
-                  <FontAwesomeIcon icon={faCamera} size="2x" />
-                </div>
-                <p className={textGrey}>Drag your image here or</p>
-                <p className={textPink}>browse</p>
+                {
+                  this.state.imageFiles.length
+                  ?
+                  <div>{this.state.imageFiles.map((file) => 
+                      <img 
+                        className={image} 
+                        src={file.preview}
+                        alt="thumbnail"
+                        height="100px" 
+                        width="100px" 
+                      /> 
+                    )}
+                  </div>
+                  :
+                  <div>
+                    <div className={camera}>
+                      <FontAwesomeIcon icon={faCamera} size="2x" />
+                    </div>
+                    <p className={textGrey}>Drag your image here or</p>
+                    <p className={textPink}>browse</p>
+                  </div>
+                }
               </Dropzone>
 
               <br/><br/>
@@ -161,15 +201,8 @@ export class PageModal extends Component {
                 value={this.componentState.season} 
                 onChange={this._onInputChange('season')}
               >
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-                <option value="6">6</option>
+                {this._createOptions()}
               </select>
-
-              <label>  </label>
 
               <label className={label}>Episode: </label>
 
@@ -179,10 +212,7 @@ export class PageModal extends Component {
                 value={this.componentState.episodeNumber} 
                 onChange={this._onInputChange('episodeNumber')}
               >
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>  
+                {this._createOptions()}  
               </select>
 
               <br/><br/>
@@ -197,7 +227,12 @@ export class PageModal extends Component {
 
               <br/><br/>
 
-              <input className={button} type="submit" value="Add new episode"></input>
+              <input 
+                className={cx(button, css({'&:hover': {opacity: '0.5'}}))} 
+                type="submit" 
+                value="Add new episode">
+              </input>
+              
             </form>
           </div>
 

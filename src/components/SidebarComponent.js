@@ -25,9 +25,13 @@ const button = css`
     border-radius: 20px;
     border: solid #ededed 1px;
     padding: 10px 2px;
+    cursor: pointer;
+    outline: none;
 `;
 
 const circle = css`
+    justify-self: center;
+    align-self: center;
     background-color: #ff758c;
     color: white;
     border-radius: 50%;
@@ -55,7 +59,7 @@ export class SidebarComponent extends Component {
                             Add episode
                         </span>
                     </button>
-                    <button className={button}>
+                    <button className={button} onClick={this.props.favorite}>
                         <span className={circle}>
                             <FontAwesomeIcon icon={faHeart} />
                         </span>

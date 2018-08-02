@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {css} from 'emotion';
+import { css, cx } from 'emotion';
 import { observable, action } from 'mobx';
 import { observer } from 'mobx-react';
 
@@ -51,6 +51,7 @@ const button = css`
     border: none;
     border-radius: 5px;
     padding: 10px 70px;
+    cursor: pointer;
 `;
 
 @observer
@@ -64,13 +65,10 @@ export class RegisterContainer extends Component {
     }
 
     @action.bound
-    _handleUsernameChange(event) {
-        this.componentState.username = event.target.value
-    }
-
-    @action.bound
-    _handlePasswordChange(event) {
-        this.componentState.password = event.target.value
+    _onInputChange(fieldName) {
+        return action((event) => {
+        this.componentState[fieldName] = event.target.value;
+        });
     }
 
     @action.bound
@@ -104,18 +102,33 @@ export class RegisterContainer extends Component {
                     <div>
                         <label className={customLabel} htmlFor="username">My username will be</label>
                         <br />
-                        <input className={customInput} type={"text"} id="username" value={this.componentState.username} onChange={this._handleUsernameChange} />
+                        <input 
+                            className={customInput} 
+                            type={"text"} 
+                            id="username" 
+                            value={this.componentState.username} 
+                            onChange={this._onInputChange('username')} 
+                        />
                     </div>
 
                     <div>
                         <label className={customLabel} htmlFor="password">and my password will be</label>
                         <div>
-                            <input className={customInput} type={this.componentState.showPassword ? 'text' : 'password'} id="password" value={this.componentState.password} onChange={this._handlePasswordChange} />
+                            <input 
+                                className={customInput} 
+                                type={this.componentState.showPassword ? 'text' : 'password'} 
+                                id="password" value={this.componentState.password} 
+                                onChange={this._onInputChange('password')} 
+                            />
                             <img alt="eye" src={passwordLogo} width="20" height="20" onClick={this._toggleShowPassword}/>
                         </div>
                     </div>
 
-                    <input className={button} type="button" value="Register"/>
+                    <input 
+                        className={cx(button, css({'&:hover': {opacity: '0.5'}}))} 
+                        type="button"
+                        value="Register"
+                    />
 
                 </form>
 

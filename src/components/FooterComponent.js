@@ -9,6 +9,7 @@ import twitter from '../pictures/twitter.png';
 
 
 const container = css`
+    border-top: solid #ededed 1px;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr 4fr 1fr 1fr;
     grid-template-rows: 1fr 1fr 1fr;

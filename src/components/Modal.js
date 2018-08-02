@@ -25,6 +25,7 @@ const button = css`
   border: solid #ededed 2px;
   border-radius: 50%;
   padding: 10px;
+  cursor: pointer;
 `;
 
 

@@ -1,4 +1,4 @@
-import { observable } from 'mobx';
+import { observable, computed } from 'mobx';
 
 class State {
 
@@ -6,10 +6,23 @@ class State {
     shows = [];
 
     @observable
+    favoriteShows = [];
+
+    @computed
+    get favoriteShowsNumber() {
+      return this.favoriteShows.length;
+    }
+
+    @observable
     showDetails = {};
 
     @observable
     showEpisodes = [];
+
+    @computed
+    get episodesNumber() {
+      return this.showEpisodes.length;
+    }
 
     @observable
     currentEpisode = '';

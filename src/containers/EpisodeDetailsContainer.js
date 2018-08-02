@@ -8,6 +8,10 @@ import { getEpisode } from '../services/episode';
 import { getComments } from '../services/episode';
 import { CommentComponent } from '../components/CommentComponent';
 import { createComment } from '../services/episode';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faThumbsUp } from '@fortawesome/free-solid-svg-icons'
+import { faThumbsDown } from '@fortawesome/free-solid-svg-icons'
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons'
 
 import placeholder from '../pictures/placeholder_landscape.png'
 
@@ -15,6 +19,7 @@ const container = css`
     display: grid;
     grid-template-columns: 1fr 1fr 3fr 2fr 1fr 1fr;
     grid-template-rows: 0.1fr 3fr auto 0.1fr;
+    grid-gap: 5px;
 `;
 
 const header = css`
@@ -32,8 +37,8 @@ const footer = css`
 const pictureDiv = css`
     grid-column: 2 / 6;
     grid-row: 2;
-    width: 1200px;
-    height: 400px;
+    width: 1250px;
+    height: 450px;
     justify-self: center;
 `;
 
@@ -58,6 +63,7 @@ const postComment = css`
 `;
 
 const commentTitle = css`
+    font-family: Arial, Helvetica, sans-serif;
     color: #ff758c;
 `;
 
@@ -78,46 +84,67 @@ const commentButton = css`
     color: white;
     background-color: #ff758c;
     border: none;
+    outline: none;
     border-radius: 5px;
-`;
-
-const backButton = css`
-    grid-column: 2;
-    grid-row: 2;
-    justify-self: start;
-    align-self: start;
-    color: #ff758c;
-    font-family: Arial, Helvetica, sans-serif;
-    background-color: #ededed;
-    border-radius: 100%;
-    border: none;
 `;
 
 const likesDiv = css`
     grid-column: 3;
     grid-row: 2;
     align-self: end;
+    padding-bottom: 15px;
 `;
 
 const buttonLike = css`
     display: inline-block;
-    background-color: #ededed;
-    border-radius: 20px;
-    border: none;
-    outline: none;
+    background-color: #ff758c;
+    color: white;
+    border: solid #ededed 2px;
+    border-radius: 15px;
+    padding: 5px 20px;
+    cursor: pointer;
 `;
 
 const likes = css`
     display: inline-block;
+    background-color: white;
+    border-radius: 50%;
+    border: solid #ededed 2px;
+    padding: 5px 10px;
 `;
 
 const buttonDislike = css`
     display: inline-block;
-    background-color: #ededed;
-    border-radius: 20px;
-    border: none;
-    outline: none;
+    background-color: white;
+    color: black;
+    border: solid #ededed 2px;
+    border-radius: 15px;
+    padding: 5px 20px;
+    cursor: pointer;
 `;
+
+const text = css`
+    font-family: Arial, Helvetica, sans-serif;
+`;
+
+const backButton = css`
+    color: #ff758c;
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: white;
+    border: solid #ededed 1px;
+    border-radius: 50%;
+    padding: 5px;
+    cursor: pointer;
+`;
+
+const box = css`
+    padding-top: 10px;
+    grid-column: 2;
+    grid-row: 2;
+    justify-self: start;
+    align-self: start;
+`;
+
 
 @inject("state")
 @observer
@@ -146,12 +173,13 @@ export class EpisodeDetailsContainer extends Component {
 
     @action.bound
     _redirectBack() {
-        this.props.history.push("/shows");
+        this.props.history.goBack();
     }
 
     @action.bound
     _createComment() {
         createComment(this.episodeId, this.componentState.commentText);
+        this.componentState.commentText = '';
     }
     
     render() {
@@ -159,27 +187,39 @@ export class EpisodeDetailsContainer extends Component {
             <div className={container}>
 
                 <div className={header}>
-                    <HeaderComponent />
+                    <HeaderComponent state={this.props.state} />
                 </div>
 
                 <div className={pictureDiv}>
-                    <img className={picture} src={placeholder} alt="placeholder"></img>
+                    <img 
+                        className={picture} 
+                        src={this.props.state.currentEpisode.imageUrl 
+                            ? `https://api.infinum.academy${this.props.state.currentEpisode.imageUrl}` : placeholder} 
+                        alt="placeholder"></img>
                 </div>
 
-                <button className={backButton} onClick={this._redirectBack}>Back</button>
-
-                <div className={likesDiv}>
-                    <button className={buttonLike}>Like</button>
-                    <p className={likes}>0</p>
-                    <button className={buttonDislike}>Dislike</button>
+                <div className={box}>
+                    <div className={backButton} onClick={this._redirectBack}>
+                        <FontAwesomeIcon icon={faArrowLeft}/>
+                    </div>
                 </div>
+
+                <span className={likesDiv}>
+                    <div className={buttonLike} >
+                        <FontAwesomeIcon icon={faThumbsUp} />
+                    </div>
+                    <div className={likes}>0</div>
+                    <div className={buttonDislike} >
+                        <FontAwesomeIcon icon={faThumbsDown}/>
+                    </div>
+                </span>
 
 
                 <div className={detailsContainer}>
 
                     <div>
-                        <h3>{this.props.state.currentEpisode.title}</h3>
-                        <p>{this.props.state.currentEpisode.description}</p>
+                        <h3 className={text}>{this.props.state.currentEpisode.title}</h3>
+                        <p className={text}>{this.props.state.currentEpisode.description}</p>
                     </div>
 
                     <div className={postComment}>
@@ -192,7 +232,7 @@ export class EpisodeDetailsContainer extends Component {
                     <div>
                         {
                             this.props.state.comments.map((comment) => (
-                                <CommentComponent comment={comment}/>
+                                <CommentComponent key={comment._id} comment={comment}/>
                             ))
                         }
                     </div>

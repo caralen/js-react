@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import { Link } from 'react-router-dom';
-import {css} from 'emotion';
+import { css, cx } from 'emotion';
 import { observable, action } from 'mobx';
 import { observer, inject } from 'mobx-react';
 import { login as loginUser } from '../services/user';
@@ -57,11 +57,16 @@ const button = css`
     border-radius: 5px;
     padding: 10px 70px;
     outline: none;
+    cursor: pointer;
 `;
 
 const link = css`
     color: #ff758c;
     text-decoration: none;
+`;
+
+const checkbox = css`
+    cursor: pointer;
 `;
 
 @inject("state")
@@ -78,18 +83,15 @@ export class LoginContainer extends Component {
 
     @action
     componentDidMount() {
-        this.componentState.username = localStorage.getItem('remeberedUsername');
-        this.componentState.password = localStorage.getItem('remeberedPassword');
-    }
-    
-    @action.bound
-    _handleUsernameChange(event) {
-        this.componentState.username = event.target.value
+        this.componentState.username = 'alen.carin@gmail.com'
+        this.componentState.password = 'alenc';
     }
 
     @action.bound
-    _handlePasswordChange(event) {
-        this.componentState.password = event.target.value
+    _onInputChange(fieldName) {
+        return action((event) => {
+        this.componentState[fieldName] = event.target.value;
+        });
     }
 
     @action.bound
@@ -131,21 +133,42 @@ export class LoginContainer extends Component {
                     <div>
                         <label className={customLabel} htmlFor="username">My username is</label>
                         <br />
-                        <input className={customInput} type="text" id="username" value={this.componentState.username} onChange={this._handleUsernameChange} />
+                        <input 
+                            className={customInput} 
+                            type="text" 
+                            id="username" 
+                            value={this.componentState.username} 
+                            onChange={this._onInputChange('username')} 
+                        />
                     </div>
 
                     <div>
                         <label className={customLabel} htmlFor="password">and my password is</label>
                         <div>
-                            <input className={customInput} type={this.componentState.showPassword ? 'text' : 'password'} id="password" value={this.componentState.password} onChange={this._handlePasswordChange} />
+                            <input 
+                                className={customInput} 
+                                type={this.componentState.showPassword ? 'text' : 'password'} 
+                                id="password" 
+                                value={this.componentState.password} 
+                                onChange={this._onInputChange('password')} 
+                            />
                             <img alt="eye" src={passwordLogo} width="20" height="20" onClick={this._toggleShowPassword}/>
                         </div>
                     </div>
 
                     <div>
-                        <input type="checkbox" checked={this.componentState.isChecked} onChange={this._handleCheckboxChange}/> Remember me
+                        <input 
+                            className={checkbox} 
+                            type="checkbox" 
+                            checked={this.componentState.isChecked} 
+                            onChange={this._handleCheckboxChange}
+                        /> Remember me
                     </div>
-                    <input type="submit" className={button} value="Login" />
+                    <input 
+                        type="submit" 
+                        className={cx(button, css({'&:hover': {opacity: '0.5'}}))} 
+                        value="Login" 
+                    />
 
                 </form>
 

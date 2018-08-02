@@ -27,6 +27,7 @@ const time = css`
     grid-column: 3;
     grid-row: 1;
     color: #b7b7b7;
+    padding-left: 10px;
 `;
 
 const description = css`

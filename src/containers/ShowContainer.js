@@ -19,13 +19,12 @@ const container = css`
     grid-template-columns: 1fr 4fr 2fr 1fr;
     grid-template-rows: 1fr 1fr auto auto 1fr;
     background-color: #f7f7f7;
+    grid-gap: 10px;
 `;
 
 const detailsContainer = css`
     grid-column: 2;
     grid-row: 3;
-    display: grid;
-    grid-template-rows: repeat(auto-fill, 250px);
 `;
 
 const episodesContainer = css`
@@ -66,8 +65,9 @@ const backButton = css`
     background-color: white;
     color: #ff758c;
     border: solid #ededed 1px;
-    border-radius: 100%;
+    border-radius: 50%;
     padding: 10px;
+    cursor: pointer;
 `;
 
 @inject("state")
@@ -87,6 +87,7 @@ export class ShowContainer extends Component {
 
     @action.bound
     _redirectBack() {
+        this.props.state.showEpisodes = [];
         this.props.history.push("/shows");
     }
 
@@ -103,51 +104,73 @@ export class ShowContainer extends Component {
         this.props.history.push(`/shows/${this.showId}/modal`);
     }
 
+    @action.bound
+    _onEpisodeClick(episodeId) {
+        this.props.history.push(`/episodes/${episodeId}`);
+    }
+
+    @action.bound
+    _addToFavorites() {
+        this.props.state.favoriteShows.push(this.props.state.showDetails);
+    }
+
 
     render() {
         return (
-            <div className={container}>
+            <div>
+                {
+                    this.props.state.episodesNumber
+                    ?
+                    <div className={container}>
 
-                <div className={header}>
-                    <HeaderComponent state={this.props.state} />
-                </div>
+                        <div className={header}>
+                            <HeaderComponent state={this.props.state} />
+                        </div>
 
-                <div className={backButton} onClick={this._redirectBack}>
-                    <FontAwesomeIcon icon={faArrowLeft}/>
-                </div>
+                        <div className={backButton} onClick={this._redirectBack}>
+                            <FontAwesomeIcon icon={faArrowLeft}/>
+                        </div>
 
-                <div className={detailsContainer}>
-                    <ShowDetailsComponent 
-                        details={this.props.state.showDetails} 
-                        like={this._like} 
-                        dislike={this._dislike} 
-                    />
-                </div>
-
-                <div className={sidebar}>
-                    <SidebarComponent 
-                        pictureSrc={`https://api.infinum.academy${this.props.state.showDetails.imageUrl}`}
-                        toggleModal={this._toggleModal}
-                    />
-                </div>
-
-                <div className={episodesContainer}>
-                    <p className={p}>SEASONS & EPISODES</p>
-                    {
-                        this.props.state.showEpisodes.map((episode) => (
-                            <ShowEpisodeComponent 
-                                key={episode._id} 
-                                episode={episode}
-                                pictureSrc={`https://api.infinum.academy${episode.imageUrl}`}
-                                linkTo={`episodes/${episode._id}`} 
+                        <div className={detailsContainer}>
+                            <ShowDetailsComponent 
+                                details={this.props.state.showDetails} 
+                                like={this._like} 
+                                dislike={this._dislike} 
                             />
-                        ))
-                    }
-                </div>
+                        </div>
 
-                <div className={footer}>
-                    <FooterComponent />
-                </div>
+                        <div className={sidebar}>
+                            <SidebarComponent 
+                                pictureSrc={`https://api.infinum.academy${this.props.state.showDetails.imageUrl}`}
+                                toggleModal={this._toggleModal}
+                                favorite={this._addToFavorites}
+                            />
+                        </div>
+
+                        <div className={episodesContainer}>
+                            <p className={p}>SEASONS & EPISODES</p>
+                            {
+                                this.props.state.showEpisodes.map((episode) => (
+                                    <ShowEpisodeComponent 
+                                        key={episode._id} 
+                                        episode={episode}
+                                        pictureSrc={`https://api.infinum.academy${episode.imageUrl}`}
+                                        linkTo={`../episodes/${episode._id}`}
+                                        onClick={() => this._onEpisodeClick(episode._id)}
+                                    />
+                                ))
+                            }
+                        </div>
+
+                        <div className={footer}>
+                            <FooterComponent />
+                        </div>
+                    </div>
+                    :
+                    <div>
+                        Loading...
+                    </div>
+                }
             </div>
         );
     }

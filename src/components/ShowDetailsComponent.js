@@ -8,40 +8,48 @@ import { faThumbsDown } from '@fortawesome/free-solid-svg-icons'
 const titleContainer = css`
     display: grid;
     grid-template-columns: 1fr 0.1fr 0.1fr 0.1fr 1fr;
-    grid-template-rows: repeat(3, 1fr);
-    grid-gap: 5px;
+    grid-template-rows: repeat(2, 1fr);
 `;
 
 const title = css`
     grid-column: 1;
-    grid-row: 1 / 4;
+    grid-row: 1 / 3;
 `;
 
 const buttonLike = css`
     grid-column: 2;
-    grid-row: 2;
+    grid-row: 1 / 3;
+    align-self: center;
     background-color: white;
     color: #ff758c;
     border: solid #ededed 2px;
     border-radius: 50%;
     padding: 10px;
+    cursor: pointer;
 `;
 
 const likes = css`
     justify-self: center;
     align-self: center;
     grid-column: 3;
-    grid-row: 2;
+    grid-row: 1 / 3;
+    background-color: white;
+    border-radius: 50%;
+    border: solid #ededed 2px;
+    height: 40px;
+    padding: 0px 12px;
 `;
 
 const buttonDislike = css`
     grid-column: 4;
-    grid-row: 2;
+    grid-row: 1 / 3;
+    align-self: center;
     background-color: white;
     color: #ff758c;
     border: solid #ededed 2px;
     border-radius: 50%;
     padding: 10px;
+    cursor: pointer;
 `;
 
 @observer

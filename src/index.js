@@ -24,7 +24,7 @@ ReactDOM.render((
                 <Route exact path="/shows" component={ App } />
                 <Route path="/shows/:showsId" component={ ShowContainer } />
                 <Route path="/shows/:showsId/modal" component={PageModal} />
-                <Route exact path="/shows/episodes/:episodeId" component={ EpisodeDetailsContainer } />
+                <Route exact path="/episodes/:episodeId" component={ EpisodeDetailsContainer } />
             </div>
         </BrowserRouter>
     </Provider>

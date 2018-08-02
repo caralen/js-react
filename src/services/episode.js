@@ -1,6 +1,7 @@
 import { get } from './api';
 import { post } from './api';
 import { uploadPost } from './api';
+import { getEpisodes } from './show';
 import state from '../state';
 import { runInAction } from 'mobx';
 
@@ -27,9 +28,9 @@ export async function createComment(episodeId, text) {
 }
 
 export async function createEpisode(data) {
-    const resp = await post(`episodes`, data);
+    await post(`episodes`, data);
     runInAction(() => {
-        console.log(resp);
+        getEpisodes(data.showId);
     });
 }
 
